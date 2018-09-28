@@ -16,7 +16,8 @@ export class Question {
   lastUpdatedOn?: Date;
   approvedBy1?: string;
   approvedOn?: Date;
-  
+  categoryIds?: number[];
+
   constructor() {
     this.id = 0;
     this.answers = [new Answer(), new Answer(), new Answer(), new Answer()];
