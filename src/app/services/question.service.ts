@@ -27,10 +27,14 @@ export class QuestionService {
       map(([questions, categories]) => {
         questions.forEach(q => {
           q.categories = [];
-          q.categoryIds.forEach(id => q.categories.push(categories.find(element => element.id == id)))
+          q.categoryIds.forEach(id => q.categories.push(categories.find(element => element.id === id)));
         });
         return questions;
       })
     );
+  }
+
+  public saveQuestion (question: Question): Observable<Question> {
+    return this.http.post<Question>(this._serviceUrl, question);
   }
 }

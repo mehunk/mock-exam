@@ -7,7 +7,11 @@ import {
   MatToolbarModule,
   MatCardModule,
   MatChipsModule,
-  MatButtonModule
+  MatButtonModule,
+  MatSelectModule,
+  MatFormFieldModule,
+  MatCheckboxModule,
+  MatInputModule
 } from '@angular/material';
 
 // import {PlatformModule} from '@angular/cdk/platform';
@@ -24,7 +28,11 @@ import {
     MatToolbarModule,
     MatCardModule,
     MatChipsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatInputModule
   ]
 })
 export class CustomMaterialModule {}

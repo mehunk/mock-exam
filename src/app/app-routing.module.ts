@@ -1,16 +1,18 @@
-import { NgModule }              from '@angular/core';
-import { RouterModule, Routes }  from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
 import {
   CategoryComponent,
   QuestionComponent,
-  TagComponent
-} from './components'
+  TagComponent,
+  QuestionAddUpdateComponent
+} from './components';
 
 const appRoutes: Routes = [
   { path: 'categories', component: CategoryComponent },
   { path: 'questions', component: QuestionComponent },
   { path: 'tags', component: TagComponent },
+  { path: 'question/add', component: QuestionAddUpdateComponent },
   { path: '',   redirectTo: '/categories', pathMatch: 'full' }
 ];
 
