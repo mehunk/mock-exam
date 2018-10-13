@@ -12,10 +12,11 @@ import * as fromRoot from '../../store/reducers';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
-  questions$: Observable<Question[]>;
+  public questions$: Observable<Question[]>;
+  public questions: Question[];
 
   constructor (private store: Store<fromRoot.State>) {
-    this.questions$ = store.pipe(select(fromRoot.getQuestions));
+    this.questions$ = store.pipe(select(fromRoot.getQuestionsWithCategory));
   }
 
   ngOnInit() {}

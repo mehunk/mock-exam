@@ -13,19 +13,22 @@ import { environment } from '../../../environments/environment';
 import * as fromCatetory from './category.reducer';
 import * as fromTag from './tag.reducer';
 import * as fromQuestion from './question.reducer';
+import * as fromCategoryDictionary from './category-dictionary.reducer';
 
 // 根状态，包含多个子状态
 export interface State {
   category: fromCatetory.State;
   tag: fromTag.State;
   question: fromQuestion.State;
+  categoryDictionary: fromCategoryDictionary.State;
 }
 
 // 包含多个子 reducer
 export const reducers: ActionReducerMap<State> = {
   category: fromCatetory.reducer,
   tag: fromTag.reducer,
-  question: fromQuestion.reducer
+  question: fromQuestion.reducer,
+  categoryDictionary: fromCategoryDictionary.reducer
 };
 
 // console.log all actions
@@ -60,6 +63,13 @@ export const getCategoryLoaded = createSelector(
   fromCatetory.getLoaded
 );
 
+// 创建从根状态选择出 categoryDictionary 状态的选择器
+export const getCategoryDictionaryState = createFeatureSelector<State, fromCategoryDictionary.State>('categoryDictionary');
+
+export const {
+  selectEntities: getCategoryEntities
+} = fromCategoryDictionary.adapter.getSelectors(getCategoryDictionaryState);
+
 // 创建从根状态选择出 tag 状态的选择器
 export const selectTagState = createFeatureSelector<State, fromTag.State>('tag');
 // 创建从 tag 状态中选择出 tags 属性的选择器
@@ -68,7 +78,7 @@ export const getTags = createSelector(
   fromTag.getTags
 );
 
-// 创建从跟状态选择出 question 状态的选择器
+// 创建从根状态选择出 question 状态的选择器
 export const selectQuestionState = createFeatureSelector<State, fromQuestion.State>('question');
 
 export const getQuestions = createSelector(
@@ -90,4 +100,14 @@ export const getQuestionSaving = createSelector(
 export const getQuestionSaved = createSelector(
   selectQuestionState,
   fromQuestion.getSaved
+);
+
+export const getQuestionsWithCategory = createSelector(
+  getQuestions,
+  getCategoryEntities,
+  (questions, categories) => questions.map(question => ({ // 不能直接修改 question，需要新建一个对象
+      ...question,
+      categories: question.categoryIds.map(id => categories[id])
+    })
+  )
 );
