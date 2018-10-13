@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
-import { TagService } from '../../services';
+import * as fromRoot from '../../store/reducers';
 
 @Component({
   selector: 'app-tag',
@@ -12,10 +13,9 @@ import { TagService } from '../../services';
 export class TagComponent implements OnInit {
   public tags$: Observable<string[]>;
 
-  constructor (private tagService: TagService) { }
-
-  ngOnInit() {
-    this.tags$ = this.tagService.getTags();
+  constructor (private store: Store<fromRoot.State>) {
+    this.tags$ = store.pipe(select(fromRoot.getTags));
   }
 
+  ngOnInit() {}
 }

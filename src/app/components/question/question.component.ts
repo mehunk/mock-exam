@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
 import { Question } from '../../model';
-import { QuestionService } from '../../services';
+import * as fromRoot from '../../store/reducers';
 
 @Component({
   selector: 'app-question',
@@ -11,11 +12,11 @@ import { QuestionService } from '../../services';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
-  private questions$: Observable<Question[]>;
+  questions$: Observable<Question[]>;
 
-  constructor (private questionService: QuestionService) { }
-
-  ngOnInit() {
-    this.questions$ = this.questionService.getQuestions();
+  constructor (private store: Store<fromRoot.State>) {
+    this.questions$ = store.pipe(select(fromRoot.getQuestions));
   }
+
+  ngOnInit() {}
 }

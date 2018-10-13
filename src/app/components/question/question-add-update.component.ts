@@ -4,8 +4,12 @@ import { Router } from '@angular/router';
 
 import { debounceTime } from 'rxjs/operators';
 
+import { Store } from '@ngrx/store';
+
 import { Category, Question, Answer } from '../../model';
 import { CategoryService, TagService, QuestionService } from '../../services';
+import * as fromRoot from '../../store/reducers';
+import * as actions from '../../store/actions';
 
 @Component({
   selector: 'app-question-add-update',
@@ -38,7 +42,8 @@ export class QuestionAddUpdateComponent implements OnInit {
     private router: Router,
     private categoryService: CategoryService,
     private tagService: TagService,
-    private questionService: QuestionService
+    private questionService: QuestionService,
+    private store: Store<fromRoot.State>
   ) { }
 
   ngOnInit() {
@@ -132,9 +137,10 @@ export class QuestionAddUpdateComponent implements OnInit {
   }
 
   private saveQuestion(question: Question) {
-    this.questionService.saveQuestion(question).subscribe(() => {
+    /* this.questionService.saveQuestion(question).subscribe(() => {
       this.router.navigate(['/questions']);
-    });
+    }); */
+    this.store.dispatch(new actions.AddQuestion(question));
   }
 
   public addTag() {

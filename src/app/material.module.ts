@@ -11,7 +11,8 @@ import {
   MatSelectModule,
   MatFormFieldModule,
   MatCheckboxModule,
-  MatInputModule
+  MatInputModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 // import {PlatformModule} from '@angular/cdk/platform';
@@ -32,7 +33,8 @@ import {
     MatSelectModule,
     MatFormFieldModule,
     MatCheckboxModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ]
 })
 export class CustomMaterialModule {}

@@ -6,7 +6,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import 'hammerjs';
+
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+
 import { CustomMaterialModule } from './material.module';
+
+import { environment } from '../environments/environment';
 
 import {
   AppComponent,
@@ -20,7 +28,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { InMemoryDataService } from './in-memory-data.service';
 
-import 'hammerjs';
+import { reducers, metaReducers } from './store/reducers';
+import { CategoryEffects, TagEffects, QuestionEffects } from './store/effects';
 
 @NgModule({
   declarations: [
@@ -44,7 +53,13 @@ import 'hammerjs';
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
-    AppRoutingModule
+    AppRoutingModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production // Restrict extension to log-only mode
+    }),
+    EffectsModule.forRoot([CategoryEffects, TagEffects, QuestionEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
 import { Category } from '../../model';
-import { CategoryService } from '../../services';
+import * as fromRoot from '../../store/reducers';
 
 @Component({
   selector: 'app-category',
@@ -13,9 +14,9 @@ import { CategoryService } from '../../services';
 export class CategoryComponent implements OnInit {
   public categories$: Observable<Category[]>;
 
-  constructor (private categoryService: CategoryService) { }
-
-  ngOnInit() {
-    this.categories$ = this.categoryService.getCategories();
+  constructor (private store: Store<fromRoot.State>) {
+    this.categories$ = store.pipe(select(fromRoot.getCategories));
   }
+
+  ngOnInit() {}
 }
