@@ -105,9 +105,11 @@ export const getQuestionSaved = createSelector(
 export const getQuestionsWithCategory = createSelector(
   getQuestions,
   getCategoryEntities,
-  (questions, categories) => questions.map(question => ({ // 不能直接修改 question，需要新建一个对象
+  (questions, categories) => {
+    console.log(questions);
+    return questions.map(question => ({ // 不能直接修改 question，需要新建一个对象
       ...question,
       categories: question.categoryIds.map(id => categories[id])
-    })
-  )
+    }));
+  }
 );

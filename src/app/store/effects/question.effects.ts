@@ -41,7 +41,7 @@ export class QuestionEffects {
     ofType<AddQuestion>(QuestionActionTypes.AddQuestion),
     switchMap(action =>
       this.questionService.saveQuestion(action.payload).pipe(
-        map((question: Question) => new AddQuestionSuccess(question)),
+        map(() => new AddQuestionSuccess()),
         tap(() => {
           this.snackBar.open('Question saved!', '', { duration: 2000 });
           this.router.navigate(['/questions']);

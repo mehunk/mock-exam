@@ -12,6 +12,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+
 import { CustomMaterialModule } from './material.module';
 
 import { environment } from '../environments/environment';
@@ -59,7 +62,9 @@ import { CategoryEffects, TagEffects, QuestionEffects } from './store/effects';
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode
     }),
-    EffectsModule.forRoot([CategoryEffects, TagEffects, QuestionEffects])
+    EffectsModule.forRoot([CategoryEffects, TagEffects, QuestionEffects]),
+    AngularFireModule.initializeApp(environment.firebase), // 引入 AngularFire 模块，并配置连接参数
+    AngularFireDatabaseModule // 引入 AngularFirestore 模块
   ],
   providers: [],
   bootstrap: [AppComponent]

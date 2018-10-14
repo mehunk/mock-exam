@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { AngularFireDatabase } from '@angular/fire/database';
+
+import { Observable, from } from 'rxjs';
 
 import { Question } from '../model/question';
 
@@ -9,18 +10,15 @@ import { Question } from '../model/question';
   providedIn: 'root'
 })
 export class QuestionService {
-
-  private _serviceUrl = 'api/questions';
-
   constructor (
-    private http: HttpClient
+    private db: AngularFireDatabase
   ) { }
 
   public getQuestions (): Observable<Question[]> {
-    return this.http.get<Question[]>(this._serviceUrl);
+    return this.db.list<Question>('questions').valueChanges();
   }
 
-  public saveQuestion (question: Question): Observable<Question> {
-    return this.http.post<Question>(this._serviceUrl, question);
+  public saveQuestion (question: Question): Observable<any> {
+    return from(this.db.list<Question>('questions').push(question));
   }
 }

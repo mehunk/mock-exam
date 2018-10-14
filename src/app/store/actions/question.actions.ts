@@ -28,7 +28,7 @@ export class AddQuestion implements Action {
 export class AddQuestionSuccess implements Action {
   readonly type = QuestionActionTypes.AddQuestionSuccess;
 
-  constructor (public payload: Question) {}
+  constructor () {}
 }
 
 export type QuestionActionsUnion =

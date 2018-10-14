@@ -137,9 +137,6 @@ export class QuestionAddUpdateComponent implements OnInit {
   }
 
   private saveQuestion(question: Question) {
-    /* this.questionService.saveQuestion(question).subscribe(() => {
-      this.router.navigate(['/questions']);
-    }); */
     this.store.dispatch(new actions.AddQuestion(question));
   }
 

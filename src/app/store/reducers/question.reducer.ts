@@ -46,8 +46,7 @@ export function reducer (
       return {
         ...state,
         saving: false,
-        saved: true,
-        questions: [...state.questions, action.payload] // 需要把 questions 数组也拆解掉
+        saved: true
       };
     default:
       return state;

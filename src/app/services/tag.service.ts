@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+
+import { AngularFireDatabase } from '@angular/fire/database';
 
 import { Observable } from 'rxjs';
 
@@ -10,9 +11,9 @@ export class TagService {
 
   private _serviceUrl = 'api/tags';
 
-  constructor (private http: HttpClient) { }
+  constructor (private db: AngularFireDatabase) { }
 
   public getTags (): Observable<string[]> {
-    return this.http.get<string[]>(this._serviceUrl);
+    return this.db.list<string>('tags').valueChanges();
   }
 }

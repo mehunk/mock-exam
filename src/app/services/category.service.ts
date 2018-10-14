@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 import { Category } from '../model/category';
 
@@ -9,14 +9,11 @@ import { Category } from '../model/category';
   providedIn: 'root'
 })
 export class CategoryService {
-
-  private _serviceUrl = 'api/categories';  // URL to web api
-
   constructor (
-    private http: HttpClient
+    private db: AngularFireDatabase
   ) { }
 
   public getCategories (): Observable<Category[]> {
-    return this.http.get<Category[]>(this._serviceUrl);
+    return this.db.list<Category>('categories').valueChanges();
   }
 }
