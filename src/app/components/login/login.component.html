@@ -1,0 +1,9 @@
+<h1 md-dialog-title>Choose Login Method</h1>
+
+<div mat-dialog-content>
+  <firebase-ui (signInSuccessWithAuthResult)="successCallback($event)" (signInFailure)="errorCallback($event)"></firebase-ui>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

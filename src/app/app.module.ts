@@ -14,6 +14,8 @@ import { EffectsModule } from '@ngrx/effects';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 
 import { CustomMaterialModule } from './material.module';
 
@@ -33,6 +35,17 @@ import { InMemoryDataService } from './in-memory-data.service';
 
 import { reducers, metaReducers } from './store/reducers';
 import { CategoryEffects, TagEffects, QuestionEffects } from './store/effects';
+import { LoginComponent } from './components/login/login.component';
+
+// 配置 Firebase Auth
+const firebaseUiAuthConfig: firebaseui.auth.Config = {
+  signInFlow: 'popup',
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID
+  ],
+  credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM
+};
 
 @NgModule({
   declarations: [
@@ -40,7 +53,11 @@ import { CategoryEffects, TagEffects, QuestionEffects } from './store/effects';
     CategoryComponent,
     QuestionComponent,
     TagComponent,
-    QuestionAddUpdateComponent
+    QuestionAddUpdateComponent,
+    LoginComponent
+  ],
+  entryComponents: [
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +81,9 @@ import { CategoryEffects, TagEffects, QuestionEffects } from './store/effects';
     }),
     EffectsModule.forRoot([CategoryEffects, TagEffects, QuestionEffects]),
     AngularFireModule.initializeApp(environment.firebase), // 引入 AngularFire 模块，并配置连接参数
-    AngularFireDatabaseModule // 引入 AngularFirestore 模块
+    AngularFireDatabaseModule, // 引入 AngularFireDatabase 模块
+    AngularFireAuthModule, // 引入 AngularFireAuth 模块
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig), // 引入 Firebase Auth
   ],
   providers: [],
   bootstrap: [AppComponent]
