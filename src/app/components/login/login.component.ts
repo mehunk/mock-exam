@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-import { FirebaseUISignInSuccessWithAuthResult, FirebaseUISignInFailure } from 'firebaseui-angular';
-import { Store } from '@ngrx/store';
-import * as fromRoot from '../../store/reducers';
-import { LoginSuccess } from '../../store/actions';
-import { User } from '../../model';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -15,11 +11,11 @@ import { User } from '../../model';
 export class LoginComponent implements OnInit {
 
   constructor (
-    private store: Store<fromRoot.State>,
-    private sfAuth: AngularFireAuth
+    private afAuth: AngularFireAuth,
+    private matDialogRef: MatDialogRef<LoginComponent>
   ) {
     // 订阅登录状态
-    this.sfAuth.authState.subscribe(this.firebaseAuthChangeListener);
+    this.afAuth.authState.subscribe(this.firebaseAuthChangeListener);
   }
 
   ngOnInit() {
@@ -45,19 +41,7 @@ export class LoginComponent implements OnInit {
    *
    * @param signInSuccessData - 登录成功数据
    */
-  public onSuccess (signInSuccessData: FirebaseUISignInSuccessWithAuthResult) {
-    console.log(signInSuccessData);
-    const user: User = new User(signInSuccessData.authResult.user);
-    console.log(user);
-    this.store.dispatch(new LoginSuccess(user));
-  }
-
-  /**
-   * 登录失败回调函数
-   *
-   * @param errorData - 登录失败数据
-   */
-  public onError(errorData: FirebaseUISignInFailure) {
-    console.log(errorData);
+  public onSuccess () {
+    this.matDialogRef.close();
   }
 }

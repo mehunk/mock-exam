@@ -22,7 +22,12 @@
         <span mat-line>Questions</span>
         <span mat-line class="secondary">Questions</span>
       </a>
-      <a mat-list-item (click)="sidenav.close(); login()">
+      <a *ngIf="user" mat-list-item (click)="sidenav.close(); logout()">
+        <mat-icon mat-list-icon>account_circle</mat-icon>
+        <span mat-line>{{user.displayName}}</span>
+        <span mat-line class="secondary">Logout</span>
+      </a>
+      <a *ngIf="!user" mat-list-item (click)="sidenav.close(); login()">
         <mat-icon mat-list-icon>mood_bad</mat-icon>
         <span mat-line>Login</span>
         <span mat-line class="secondary">Login</span>
@@ -38,7 +43,7 @@
 
       <span>{{title}}</span>
       <span class="fill-remaining-space"></span>
-      <span>HSK</span>
+      <span *ngIf="user" mat-line class="toolbar-user-name">{{user.displayName}}</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

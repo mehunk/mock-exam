@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import 'hammerjs';
@@ -31,11 +30,10 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { InMemoryDataService } from './in-memory-data.service';
-
 import { reducers, metaReducers } from './store/reducers';
 import { CategoryEffects, TagEffects, QuestionEffects } from './store/effects';
 import { LoginComponent } from './components/login/login.component';
+import { AuthenticationService } from './services';
 
 // 配置 Firebase Auth
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
@@ -70,9 +68,6 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     FlexLayoutModule,
     CustomMaterialModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    ),
     AppRoutingModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({
@@ -85,7 +80,9 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AngularFireAuthModule, // 引入 AngularFireAuth 模块
     FirebaseUIModule.forRoot(firebaseUiAuthConfig), // 引入 Firebase Auth
   ],
-  providers: [],
+  providers: [
+    AuthenticationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

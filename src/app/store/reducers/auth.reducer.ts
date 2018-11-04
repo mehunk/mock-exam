@@ -17,7 +17,7 @@ export function reducer (
   switch (action.type) {
     case AuthActionTypes.LoginSuccess:
       return {
-        user: { ...action.payload }
+        user: action.payload
       };
     case AuthActionTypes.Logout:
       return {

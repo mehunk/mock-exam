@@ -6,7 +6,7 @@ import {
   MetaReducer
 } from '@ngrx/store';
 
-import { storeFreeze } from 'ngrx-store-freeze';
+// import { storeFreeze } from 'ngrx-store-freeze';
 
 import { environment } from '../../../environments/environment';
 
@@ -45,7 +45,7 @@ export function logger(reducer: ActionReducer<State>): ActionReducer<State> {
 }
 
 export const metaReducers: MetaReducer<State>[] = !environment.production
-  ? [logger, storeFreeze]
+  ? [logger /*,  storeFreeze */]
   : [];
 
 // 创建从根状态选择出 category 状态的选择器
