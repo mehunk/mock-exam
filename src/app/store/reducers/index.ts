@@ -14,6 +14,7 @@ import * as fromCatetory from './category.reducer';
 import * as fromTag from './tag.reducer';
 import * as fromQuestion from './question.reducer';
 import * as fromCategoryDictionary from './category-dictionary.reducer';
+import * as fromAuth from './auth.reducer';
 
 // 根状态，包含多个子状态
 export interface State {
@@ -21,6 +22,7 @@ export interface State {
   tag: fromTag.State;
   question: fromQuestion.State;
   categoryDictionary: fromCategoryDictionary.State;
+  auth: fromAuth.State;
 }
 
 // 包含多个子 reducer
@@ -28,7 +30,8 @@ export const reducers: ActionReducerMap<State> = {
   category: fromCatetory.reducer,
   tag: fromTag.reducer,
   question: fromQuestion.reducer,
-  categoryDictionary: fromCategoryDictionary.reducer
+  categoryDictionary: fromCategoryDictionary.reducer,
+  auth: fromAuth.reducer
 };
 
 // console.log all actions
@@ -112,4 +115,11 @@ export const getQuestionsWithCategory = createSelector(
       categories: question.categoryIds.map(id => categories[id])
     }));
   }
+);
+
+export const selectAuthState = createFeatureSelector<State, fromAuth.State>('auth');
+
+export const getUser = createSelector(
+  selectAuthState,
+  fromAuth.getUser
 );
