@@ -22,16 +22,18 @@
         <span mat-line>Questions</span>
         <span mat-line class="secondary">Questions</span>
       </a>
-      <a *ngIf="user" mat-list-item (click)="sidenav.close(); logout()">
+      <a *ngIf="user$ | async as user; else showLogin" mat-list-item (click)="sidenav.close(); logout()">
         <mat-icon mat-list-icon>account_circle</mat-icon>
         <span mat-line>{{user.displayName}}</span>
         <span mat-line class="secondary">Logout</span>
       </a>
-      <a *ngIf="!user" mat-list-item (click)="sidenav.close(); login()">
-        <mat-icon mat-list-icon>mood_bad</mat-icon>
-        <span mat-line>Login</span>
-        <span mat-line class="secondary">Login</span>
-      </a>
+      <ng-template #showLogin>
+        <a mat-list-item (click)="sidenav.close(); login()">
+          <mat-icon mat-list-icon>mood_bad</mat-icon>
+          <span mat-line>Login</span>
+          <span mat-line class="secondary">Login</span>
+        </a>
+      </ng-template>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -43,7 +45,7 @@
 
       <span>{{title}}</span>
       <span class="fill-remaining-space"></span>
-      <span *ngIf="user" mat-line class="toolbar-user-name">{{user.displayName}}</span>
+      <span *ngIf="user$ | async as user" mat-line class="toolbar-user-name">{{user.displayName}}</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

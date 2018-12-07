@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
     private matDialogRef: MatDialogRef<LoginComponent>
   ) {
     // 订阅登录状态
-    this.afAuth.authState.subscribe(this.firebaseAuthChangeListener);
+    // this.afAuth.authState.subscribe(this.firebaseAuthChangeListener);
   }
 
   ngOnInit() {
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
    *
    * @param response - 不知道是什么
    */
-  private firebaseAuthChangeListener(response) {
+  private firebaseAuthChangeListener (response) {
     // if needed, do a redirect in here
     console.log(response);
     if (response) {
@@ -42,6 +42,6 @@ export class LoginComponent implements OnInit {
    * @param signInSuccessData - 登录成功数据
    */
   public onSuccess () {
-    this.matDialogRef.close();
+    // this.matDialogRef.close();
   }
 }

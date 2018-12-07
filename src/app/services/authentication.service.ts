@@ -1,73 +1,41 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Store, select } from '@ngrx/store';
-import { take } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
 
-import { LoginSuccess, Logout } from '../store/actions';
-import { User } from '../model';
-import * as fromRoot from '../store/reducers';
-import { LoginComponent } from '../components/login/login.component';
+import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { first } from 'rxjs/operators';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
 
-  constructor (
-    private afAuth: AngularFireAuth,
-    private matDialog: MatDialog,
-    private store: Store<fromRoot.State>
-  ) {
-    this.afAuth.authState.subscribe(user => {
-      if (user) {
-        // 用户登录
-        console.log(user);
-        console.log(user.providerData[0].displayName + ':' + user.providerData[0].email);
-        this.store.dispatch(new LoginSuccess(new User(user)));
-      } else {
-        // 用户注销
-        this.store.dispatch(new Logout());
-      }
-    });
-  }
-
-  /**
-   * 确保登录
-   */
-  public ensureLogin () {
-    if (!this.isAuthenticated) {
-      this.showLogin();
-    }
-  }
-
-
-  /**
-   * 弹出登录框
-   */
-  public showLogin () {
-    this.matDialog.open(LoginComponent, {
-      disableClose: false
-    });
-  }
+  constructor (private afAuth: AngularFireAuth) {}
 
   /**
    * 注销
    */
-  public logout () {
-    this.afAuth.auth.signOut();
+  public logout (): Promise<void> {
+    return this.afAuth.auth.signOut();
   }
 
-  get isAuthenticated (): boolean {
-    return !!this.user;
+  /**
+   * 获取登录用户
+   */
+  public getUser (): Observable<firebase.User> {
+    return this.afAuth.authState;
   }
 
-  get user (): User {
-    let user: User;
-    this.store.pipe(
-      select(fromRoot.getUser),
-      take(1)
-    ).subscribe(fireUser => user = fireUser);
-    return user;
+  /**
+   * 获取登录状态
+   *
+   * @todo 如果在初始化时使用会一直返回 false，无法确定这种用法是否正确
+   */
+  public get isLoggedIn (): boolean {
+    let loggedIn = false;
+    this.afAuth.authState.pipe(
+      first()
+    ).subscribe(user => loggedIn = !user);
+    return loggedIn;
   }
 }

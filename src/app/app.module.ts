@@ -31,7 +31,7 @@ import {
 import { AppRoutingModule } from './app-routing.module';
 
 import { reducers, metaReducers } from './store/reducers';
-import { CategoryEffects, TagEffects, QuestionEffects } from './store/effects';
+import { CategoryEffects, TagEffects, QuestionEffects, AuthEffects } from './store/effects';
 import { LoginComponent } from './components/login/login.component';
 import { AuthenticationService } from './services';
 
@@ -74,7 +74,12 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode
     }),
-    EffectsModule.forRoot([CategoryEffects, TagEffects, QuestionEffects]),
+    EffectsModule.forRoot([
+      CategoryEffects,
+      TagEffects,
+      QuestionEffects,
+      AuthEffects
+    ]),
     AngularFireModule.initializeApp(environment.firebase), // 引入 AngularFire 模块，并配置连接参数
     AngularFireDatabaseModule, // 引入 AngularFireDatabase 模块
     AngularFireAuthModule, // 引入 AngularFireAuth 模块
