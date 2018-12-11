@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { debounceTime } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
 
-import { Store } from '@ngrx/store';
-
-import { Category, Question, Answer } from '../../model';
+import { Category, Question, Answer, User } from '../../model';
 import { CategoryService, TagService, QuestionService } from '../../services';
 import * as fromRoot from '../../store/reducers';
 import * as actions from '../../store/actions';
@@ -18,6 +17,7 @@ import * as actions from '../../store/actions';
 })
 export class QuestionAddUpdateComponent implements OnInit {
 
+  public user: User;
   public categories: Category[];
 
   public question: Question;
@@ -36,7 +36,6 @@ export class QuestionAddUpdateComponent implements OnInit {
     return this.questionForm.get('tagsArray') as FormArray;
   }
 
-
   constructor (
     private fb: FormBuilder,
     private router: Router,
@@ -47,6 +46,9 @@ export class QuestionAddUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.store.pipe(
+      select(fromRoot.getUser)
+    ).subscribe(user => this.user = user);
     this.question = new Question();
     this.createForm(this.question);
 
@@ -118,7 +120,7 @@ export class QuestionAddUpdateComponent implements OnInit {
     console.log(this.questionForm.value);
     const question: Question = this.getQuestionFromFormValue(this.questionForm.value);
     console.log(question);
-
+    question.created_uid = this.user.userId;
     this.saveQuestion(question);
   }
 

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireDatabase } from '@angular/fire/database';
 
-import { Category } from '../model/category';
+import { Category } from '../model';
 
 @Injectable({
   providedIn: 'root'

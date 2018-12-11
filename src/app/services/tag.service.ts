@@ -8,9 +8,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TagService {
-
-  private _serviceUrl = 'api/tags';
-
   constructor (private db: AngularFireDatabase) { }
 
   public getTags (): Observable<string[]> {

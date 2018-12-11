@@ -3,17 +3,33 @@ import { RouterModule, Routes } from '@angular/router';
 
 import {
   CategoryComponent,
-  QuestionComponent,
+  QuestionAddUpdateComponent,
+  MyQuestionsComponent,
   TagComponent,
-  QuestionAddUpdateComponent
+  DashboardComponent,
+  AdminComponent,
+  AdminQuestionsComponent
 } from './components';
 
+import { AuthGuard } from './services';
+
 const appRoutes: Routes = [
-  { path: 'categories', component: CategoryComponent },
-  { path: 'questions', component: QuestionComponent },
-  { path: 'tags', component: TagComponent },
-  { path: 'question/add', component: QuestionAddUpdateComponent },
-  { path: '',   redirectTo: '/categories', pathMatch: 'full' }
+  { path: 'question/add', component: QuestionAddUpdateComponent, canActivate: [AuthGuard] },
+  { path: 'dashboard', component: DashboardComponent },
+  { path: 'questions', component: MyQuestionsComponent, canActivate: [AuthGuard] },
+  { path: '',   redirectTo: '/dashboard', pathMatch: 'full' },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
+    children: [
+      { path: '', component: DashboardComponent, pathMatch: 'full' },
+      { path: 'categories', component: CategoryComponent },
+      { path: 'questions', component: AdminQuestionsComponent },
+      { path: 'tags', component: TagComponent },
+    ]
+  }
 ];
 
 @NgModule({

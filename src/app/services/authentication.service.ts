@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { first } from 'rxjs/operators';
+import { AngularFireDatabase } from '@angular/fire/database';
 import * as firebase from 'firebase';
+
+import { User } from '../model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-
-  constructor (private afAuth: AngularFireAuth) {}
+  constructor (
+    private db: AngularFireDatabase,
+    private afAuth: AngularFireAuth
+  ) {}
 
   /**
    * 注销
@@ -28,14 +33,28 @@ export class AuthenticationService {
 
   /**
    * 获取登录状态
-   *
-   * @todo 如果在初始化时使用会一直返回 false，无法确定这种用法是否正确
    */
-  public get isLoggedIn (): boolean {
-    let loggedIn = false;
-    this.afAuth.authState.pipe(
+  public get isLoggedIn (): Observable<boolean> {
+    return this.afAuth.authState.pipe(
+      map(user => !!user),
       first()
-    ).subscribe(user => loggedIn = !user);
-    return loggedIn;
+    );
+  }
+
+  /**
+   * 获取当前用户的角色列表
+   *
+   * @param user - 用户信息
+   */
+  public getUserRoles (user: User): Observable<User> {
+    return this.db.object<any>(`users/${user.userId}/roles`)
+      .valueChanges()
+      .pipe(
+        first(),
+        map(roles => {
+          user.roles = roles;
+          return user;
+        })
+      );
   }
 }

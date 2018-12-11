@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-title>Mock-Exam Stats</mat-card-title>
+  <mat-list>
+    <mat-list-item>
+      <span>Categories Count: {{(categories$ | async).length}}</span>
+    </mat-list-item>
+    <mat-list-item>
+      <span>Tag Count: {{(tags$ | async).length}}</span>
+    </mat-list-item>
+    <mat-list-item>
+      <span>Question Count: {{(questions$ | async).length}}</span>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

@@ -16,13 +16,13 @@ import { User } from '../../model';
 export class AppComponent implements OnInit {
 
   public title = 'Mock exam!';
-  public user$: Observable<User>;
+  public user: User;
 
   constructor (
     private store: Store<fromRoot.State>
   ) {
     // 获取登录用户信息
-    this.user$ = this.store.pipe(select(fromRoot.getUser));
+    this.store.pipe(select(fromRoot.getUser)).subscribe(user => this.user = user);
   }
 
   ngOnInit () {

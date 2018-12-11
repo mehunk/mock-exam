@@ -24,15 +24,19 @@ import {
   AppComponent,
   CategoryComponent,
   QuestionComponent,
+  QuestionAddUpdateComponent,
+  MyQuestionsComponent,
   TagComponent,
-  QuestionAddUpdateComponent
+  DashboardComponent,
+  LoginComponent,
+  AdminComponent,
+  AdminQuestionsComponent
 } from './components';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { reducers, metaReducers } from './store/reducers';
 import { CategoryEffects, TagEffects, QuestionEffects, AuthEffects } from './store/effects';
-import { LoginComponent } from './components/login/login.component';
 import { AuthenticationService } from './services';
 
 // 配置 Firebase Auth
@@ -50,9 +54,13 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AppComponent,
     CategoryComponent,
     QuestionComponent,
-    TagComponent,
     QuestionAddUpdateComponent,
-    LoginComponent
+    MyQuestionsComponent,
+    TagComponent,
+    LoginComponent,
+    DashboardComponent,
+    AdminComponent,
+    AdminQuestionsComponent
   ],
   entryComponents: [
     LoginComponent

@@ -9,9 +9,13 @@ import { Question } from '../../model';
 import {
   LoadQuestions,
   LoadQuestionsSuccess,
+  LoadUnpublishedQuestions,
+  LoadUnpublishedQuestionsSuccess,
+  LoadUserQuestions,
+  LoadUserQuestionsSuccess,
   AddQuestion,
   AddQuestionSuccess,
-  QuestionActionTypes
+  QuestionActionTypes, ApproveQuestion
 } from '../actions';
 import { QuestionService } from '../../services';
 import { Observable } from 'rxjs';
@@ -27,26 +31,54 @@ export class QuestionEffects {
   ) {}
 
   @Effect()
-  public loadQuestions: Observable<Action> = this.actions$.pipe(
+  public loadQuestions$: Observable<Action> = this.actions$.pipe(
     ofType<LoadQuestions>(QuestionActionTypes.LoadQuestions),
     switchMap(() =>
       this.questionService.getQuestions().pipe(
-        map((questions: Question[]) => new LoadQuestionsSuccess(questions))
+        map(questions => new LoadQuestionsSuccess(questions))
       )
     )
   );
 
   @Effect()
-  public saveQuestion: Observable<Action> = this.actions$.pipe(
+  public saveQuestion$: Observable<Action> = this.actions$.pipe(
     ofType<AddQuestion>(QuestionActionTypes.AddQuestion),
-    switchMap(action =>
-      this.questionService.saveQuestion(action.payload).pipe(
+    switchMap(({ payload: question }) =>
+      this.questionService.saveQuestion(question).pipe(
         map(() => new AddQuestionSuccess()),
         tap(() => {
           this.snackBar.open('Question saved!', '', { duration: 2000 });
           this.router.navigate(['/questions']);
         })
       )
+    )
+  );
+
+  @Effect()
+  public loadUnpublishedQuestions$: Observable<Action> = this.actions$.pipe(
+    ofType<LoadUnpublishedQuestions>(QuestionActionTypes.LoadUnpublishedQuestions),
+    switchMap(() =>
+      this.questionService.getUnpublishedQuestions().pipe(
+        map(questions => new LoadUnpublishedQuestionsSuccess(questions))
+      )
+    )
+  );
+
+  @Effect()
+  public loadUserQuestions$: Observable<Action> = this.actions$.pipe(
+    ofType<LoadUserQuestions>(QuestionActionTypes.LoadUserQuestions),
+    switchMap(({ payload: user }) =>
+      this.questionService.getUserQuestions(user).pipe(
+        map(questions => new LoadUserQuestionsSuccess(questions))
+      )
+    )
+  );
+
+  @Effect({ dispatch: false })
+  public approveQuestion$: Observable<void> = this.actions$.pipe(
+    ofType<ApproveQuestion>(QuestionActionTypes.ApproveQuestion),
+    map(({ payload: question }) =>
+      this.questionService.approveQuestion(question)
     )
   );
 }

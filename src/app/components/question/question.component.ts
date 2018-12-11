@@ -1,10 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { Observable } from 'rxjs';
-import { Store, select } from '@ngrx/store';
-
-import { Question } from '../../model';
-import * as fromRoot from '../../store/reducers';
+import { Question, Category, QuestionStatus } from '../../model';
 
 @Component({
   selector: 'app-question',
@@ -12,12 +8,21 @@ import * as fromRoot from '../../store/reducers';
   styleUrls: ['./question.component.css']
 })
 export class QuestionComponent implements OnInit {
-  public questions$: Observable<Question[]>;
-  public questions: Question[];
 
-  constructor (private store: Store<fromRoot.State>) {
-    this.questions$ = store.pipe(select(fromRoot.getQuestionsWithCategory));
-  }
+  @Input() public questions: Question[];
+  @Input() public categoryDict: {[key: number]: Category};
+  @Input() public showApproveButton: boolean;
+  @Output() public approveClicked = new EventEmitter<Question>();
+
+  constructor () {}
 
   ngOnInit() {}
+
+  public getDisplayStatus (status: number): string {
+    return QuestionStatus[status];
+  }
+
+  public approveButtonClicked (question: Question) {
+    this.approveClicked.emit(question);
+  }
 }

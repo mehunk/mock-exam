@@ -88,21 +88,15 @@ export const getQuestions = createSelector(
   selectQuestionState,
   fromQuestion.getQuestions
 );
-export const getQuestionLoading = createSelector(
+
+export const getUnpublishedQuestions = createSelector(
   selectQuestionState,
-  fromQuestion.getLoading
+  fromQuestion.getUnpublishedQuestions
 );
-export const getQuestionLoaded = createSelector(
+
+export const getUserQuestions = createSelector(
   selectQuestionState,
-  fromQuestion.getLoaded
-);
-export const getQuestionSaving = createSelector(
-  selectQuestionState,
-  fromQuestion.getSaving
-);
-export const getQuestionSaved = createSelector(
-  selectQuestionState,
-  fromQuestion.getSaved
+  fromQuestion.getUserQuestions
 );
 
 export const getQuestionsWithCategory = createSelector(

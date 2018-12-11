@@ -7,22 +7,17 @@
         <span mat-line>Home</span>
         <span mat-line class="secondary">Home</span>
       </a>
-      <a mat-list-item (click)="sidenav.close()" [routerLink]="['/categories']">
-        <mat-icon mat-list-icon>list</mat-icon>
-        <span mat-line>Categories</span>
-        <span mat-line class="secondary">Categories</span>
-      </a>
-      <a mat-list-item (click)="sidenav.close()" [routerLink]="['/tags']">
-        <mat-icon mat-list-icon>bookmark</mat-icon>
-        <span mat-line>Tags</span>
-        <span mat-line class="secondary">Tags</span>
-      </a>
       <a mat-list-item (click)="sidenav.close()" [routerLink]="['/questions']">
         <mat-icon mat-list-icon>question_answer</mat-icon>
-        <span mat-line>Questions</span>
-        <span mat-line class="secondary">Questions</span>
+        <span mat-line>My Questions</span>
+        <span mat-line class="secondary">My Questions</span>
       </a>
-      <a *ngIf="user$ | async as user; else showLogin" mat-list-item (click)="sidenav.close(); logout()">
+      <a mat-list-item *ngIf="user?.roles?.admin" (click)="sidenav.close()" [routerLink]="['/admin']">
+        <mat-icon mat-list-icon>settings</mat-icon>
+        <span mat-line>Admin</span>
+        <span mat-line class="secondary">Admin</span>
+      </a>
+      <a *ngIf="user; else showLogin" mat-list-item (click)="sidenav.close(); logout()">
         <mat-icon mat-list-icon>account_circle</mat-icon>
         <span mat-line>{{user.displayName}}</span>
         <span mat-line class="secondary">Logout</span>
@@ -45,7 +40,7 @@
 
       <span>{{title}}</span>
       <span class="fill-remaining-space"></span>
-      <span *ngIf="user$ | async as user" mat-line class="toolbar-user-name">{{user.displayName}}</span>
+      <span *ngIf="as user" mat-line class="toolbar-user-name">{{user.displayName}}</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

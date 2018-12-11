@@ -7,7 +7,8 @@ export enum AuthActionTypes {
   InitializeUser = '[Auth] Initialize User',
   Login = '[Auth] Login',
   LoginSuccess = '[Auth] Login Success',
-  Logout = '[Auth] Logout'
+  Logout = '[Auth] Logout',
+  AddUserWithRoles = '[Auth] Add User With Roles'
 }
 
 /**
@@ -31,6 +32,8 @@ export class InitializeUser implements Action {
  */
 export class Login implements Action {
   readonly type = AuthActionTypes.Login;
+
+  constructor (public payload?: string) {}
 }
 
 /**
@@ -49,8 +52,15 @@ export class Logout implements Action {
   readonly type = AuthActionTypes.Logout;
 }
 
+export class AddUserWithRoles implements Action {
+  readonly type = AuthActionTypes.AddUserWithRoles;
+
+  constructor (public payload: User) {}
+}
+
 export type AuthActionsUnion = Initialize
   | InitializeUser
   | Login
   | LoginSuccess
-  | Logout;
+  | Logout
+  | AddUserWithRoles;

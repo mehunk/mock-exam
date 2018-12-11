@@ -3,10 +3,12 @@ import {User} from '../../model';
 import {AuthActionsUnion, AuthActionTypes} from '../actions';
 
 export interface State {
+  loggedInRedirectUrl: string | null;
   user: User | null;
 }
 
 export const initialState: State = {
+  loggedInRedirectUrl: null,
   user: null
 };
 
@@ -23,7 +25,10 @@ export function reducer (
         user: action.payload
       };
     case AuthActionTypes.Login:
-      return state;
+      return {
+        ...state,
+        loggedInRedirectUrl: action.payload
+      };
     case AuthActionTypes.LoginSuccess:
       return {
         ...state,
@@ -31,6 +36,11 @@ export function reducer (
       };
     case AuthActionTypes.Logout:
       return initialState;
+    case AuthActionTypes.AddUserWithRoles:
+      return {
+        ...state,
+        user: action.payload
+      };
     default:
       return state;
   }

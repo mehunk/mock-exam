@@ -1,21 +1,17 @@
-import { Question } from '../../model';
+import {Question} from '../../model';
 
-import { QuestionActionTypes, QuestionActionsUnion } from '../actions';
+import {QuestionActionsUnion, QuestionActionTypes} from '../actions';
 
 export interface State {
-  loading: boolean;
-  loaded: boolean;
-  saving: boolean;
-  saved: boolean;
   questions: Question[];
+  unpublishedQuestions: Question[];
+  userQuestions: Question[];
 }
 
 const initialState: State = {
-  loading: false,
-  loaded: false,
-  saving: false,
-  saved: false,
-  questions: []
+  questions: [],
+  unpublishedQuestions: [],
+  userQuestions: [],
 };
 
 export function reducer (
@@ -24,37 +20,31 @@ export function reducer (
 ): State {
   switch (action.type) {
     case QuestionActionTypes.LoadQuestions:
-      return {
-        ...state,
-        loading: true,
-        loaded: false
-      };
+    case QuestionActionTypes.LoadUnpublishedQuestions:
+    case QuestionActionTypes.LoadUserQuestions:
+    case QuestionActionTypes.AddQuestion:
+    case QuestionActionTypes.AddQuestionSuccess:
+      return state;
     case QuestionActionTypes.LoadQuestionsSuccess:
       return {
         ...state,
-        loading: false,
-        loaded: true,
         questions: action.payload
       };
-    case QuestionActionTypes.AddQuestion:
+    case QuestionActionTypes.LoadUnpublishedQuestionsSuccess:
       return {
         ...state,
-        saving: true,
-        saved: false
+        unpublishedQuestions: action.payload
       };
-    case QuestionActionTypes.AddQuestionSuccess:
+    case QuestionActionTypes.LoadUserQuestionsSuccess:
       return {
         ...state,
-        saving: false,
-        saved: true
+        userQuestions: action.payload
       };
     default:
       return state;
   }
 }
 
-export const getLoading = (state: State) => state.loading;
-export const getLoaded = (state: State) => state.loaded;
-export const getSaving = (state: State) => state.saving;
-export const getSaved = (state: State) => state.saved;
 export const getQuestions = (state: State) => state.questions;
+export const getUnpublishedQuestions = (state: State) => state.unpublishedQuestions;
+export const getUserQuestions = (state: State) => state.userQuestions;
